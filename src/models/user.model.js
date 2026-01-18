@@ -11,7 +11,7 @@ class AuthModel {
         WHERE email = ?
         LIMIT 1
         `,
-        [email]
+        [email],
       );
       return rows[0] || null;
     } catch (error) {
@@ -26,7 +26,7 @@ class AuthModel {
         INSERT INTO users (email, password)
         VALUES (?, ?)
         `,
-        [email, password]
+        [email, password],
       );
 
       return result.insertId;
@@ -39,14 +39,62 @@ class AuthModel {
     try {
       const [rows] = await pool.query(
         `
-        SELECT id,email
+        SELECT id,email,verify_at
         FROM users
         WHERE id = ?
         LIMIT 1
         `,
-        [id]
+        [id],
       );
       return rows[0] || null;
+    } catch (error) {
+      throw new ApiError(500, String(error));
+    }
+  }
+
+  async findByIdWithPassword(id) {
+    try {
+      const [rows] = await pool.query(
+        `
+        SELECT id, email, password
+        FROM users
+        WHERE id = ?
+        LIMIT 1
+        `,
+        [id],
+      );
+      return rows[0] || null;
+    } catch (error) {
+      throw new ApiError(500, String(error));
+    }
+  }
+
+  async updatePasswordById(id, password) {
+    try {
+      const [{ affectedRows }] = await pool.query(
+        `
+        UPDATE users SET password = ?
+        WHERE id = ?
+        LIMIT 1
+        `,
+        [password, id],
+      );
+      return affectedRows;
+    } catch (error) {
+      throw new ApiError(500, String(error));
+    }
+  }
+  async updateVerifyAtByUser(id) {
+    try {
+      const [{ affectedRows }] = await pool.query(
+        `
+        UPDATE users SET verify_at = ?
+        WHERE id = ?
+        LIMIT 1
+        `,
+        [new Date(), id],
+      );
+      return affectedRows;
     } catch (error) {
       throw new ApiError(500, String(error));
     }

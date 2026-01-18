@@ -1,16 +1,14 @@
 const fs = require("fs");
+const prefix = ".task.js";
+const baseFolder = "./src/tasks";
 
-const basePath = "./src/tasks";
-const postfix = ".task.js";
-const entries = fs
-  .readdirSync(basePath)
-  .filter((fileName) => fileName.endsWith(postfix));
+const taskFile = fs.readdirSync(baseFolder).filter((f) => f.endsWith(prefix));
 
-const taskMap = entries.reduce((previousValue, filename) => {
+const tasksMap = taskFile.reduce((obj, taskName) => {
   return {
-    ...previousValue,
-    [filename.replace(postfix, "")]: require(`./${filename}`),
+    ...obj,
+    [taskName.replace(prefix, "")]: require(`./${taskName}`),
   };
 }, {});
 
-module.exports = taskMap;
+module.exports = tasksMap;
