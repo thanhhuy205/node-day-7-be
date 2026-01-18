@@ -17,6 +17,12 @@ authRouter.post(
   verifyRefresh,
   authController.refreshTokenController,
 );
+authRouter.post(
+  "/verify-email",
+  Validator("verifyEmail"),
+  authController.verifyEmailController,
+);
+
 authRouter.use(authRequire);
 authRouter.post(
   "/logout",
@@ -24,4 +30,9 @@ authRouter.post(
   authController.logoutController,
 );
 
+authRouter.post(
+  "/change-password",
+  Validator("changePassword"),
+  authController.changePasswordController,
+);
 module.exports = authRouter;

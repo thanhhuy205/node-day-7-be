@@ -6,6 +6,7 @@ const jwtEnv = {
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
   ACCESS_TOKEN_TIME: process.env.ACCESS_TOKEN_TIME,
   REFRESH_TOKEN_TIME: process.env.REFRESH_TOKEN_TIME,
+  VERIFY_TOKEN_TIME: process.env.VERIFY_TOKEN_TIME,
 };
 
 module.exports = { jwtEnv };
